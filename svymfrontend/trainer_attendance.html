@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trainer Dashboard | Attendance</title>
+<script src="./Javascripts/nav.js" defer></script>
+<script src="./Javascripts/auth.js" defer></script>
+<script src="./Javascripts/modal.js" defer></script>
+
+<link rel="stylesheet" href="css/nav.css" />
+<link rel="stylesheet" href="css/modal.css" />
+<link rel="stylesheet" href="css/trainer_editstudents.css" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+/>
+
+<style>
+  .action-btn {
+        background-color: transparent;
+        border: 1px solid;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        /* display: inline-flex;
+        align-items: center;
+        gap: 5px; */
+    }
+
+    .save-btn {
+      padding: 8px 16px;
+      margin-top: 10px;
+      margin-left: auto;
+      cursor: pointer;
+      border-radius: 4px;
+      border: none;
+      background-color:  #007bff;
+      color: white;
+    }
+
+    .save-btn:hover {
+        background-color: #0161f2;
+    }
+
+  .remarksInput {
+  width: 100%;
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.remarksInput:disabled {
+  background-color: #f0f0f0;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.attendanceSelect {
+  width: 100%;
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: white;
+  cursor: pointer;
+}
+
+.attendanceSelect:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+</style>
+</head>
+<body>
+<div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+<div class="overlay" id="overlay"></div>
+<aside class="side-menu" id="sideMenu"></aside>
+
+<div class="data-list-container">
+    <h1><i class="fas fa-file-alt"></i> Student Attendance</h1>
+    <div class="header">
+        <div class="filter-container">
+            <label for="attendanceDate">Date:</label>
+            <input type="date" id="attendanceDate" class="custom-select-filter">
+        </div>
+
+        <div class="filter-container">
+            <label for="courseSelect">Filter by Course:</label>
+            <select id="courseSelect" class="custom-select-filter"></select>
+        </div>
+
+        <div class="filter-container">
+            <label for="filterSelect">Filter by Attendance:</label>
+            <select id="filterSelect" class="custom-select-filter">
+                <option value="default">All</option>
+                <option value="present">Present</option>
+                <option value="absent">Absent</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Status</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody id="studentsTableBody">
+                <!-- Dynamic rows will be inserted here -->
+            </tbody>
+        </table>
+        <button type="submit" class="action-btn save-btn" id="submitAttendance">Submit Attendance</button>
+        <button type="button" class="action-btn save-btn" id="editAttendance" style="display: none;">Edit Attendance</button>
+    </div>
+    <div id="footer"></div>
+</div>
+
+<script src="Javascripts/trainer_attendance.js"></script>
+<script src="Javascripts/footer.js"></script>
+</body>
+</html>

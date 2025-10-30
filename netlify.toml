@@ -1,0 +1,11 @@
+[build]
+  command = ""                 # no frontend build
+  publish = "svymfrontend"     # serve static frontend from this folder
+
+[functions]
+  directory = "svymbackend/functions"   # tell Netlify where to look for functions
+
+[[redirects]]
+  from = "/"           
+  to = "/login.html"   
+  status = 302

@@ -66,6 +66,12 @@
           margin-bottom: 20px;
         }
 
+        .header-right {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+        }
+
         .header h1 {
           font-size: 1.8rem;
           color: #004080;
@@ -104,6 +110,31 @@
           background-color: #0056b3;
         }
 
+        .sort-container {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-left: 20px;
+        }
+
+        .sort-container label {
+          font-weight: 500;
+          color: var(--text-color);
+        }
+
+        .sort-container select {
+          padding: 8px 10px;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+          background-color: #fff;
+          font-size: 1rem;
+          outline: none;
+        }
+
+        .sort-container select:focus {
+          border-color: var(--primary-color);
+        }
+
         /* Notification badge for requests */
         .badge {
             display: inline-block;
@@ -120,6 +151,7 @@
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
+            margin-left: auto;
         }
 
         .button-group button {
@@ -283,6 +315,7 @@
     <div class="data-list-container">
         <div class="header">
           <h1><i class="fas fa-user-graduate"></i>Student Management</h1>
+          <div class="header-right">
             <!-- Search Input -->
             <div class="search-box">
               <input
@@ -293,6 +326,15 @@
               <button id="searchBtn" class="search-btn">
                 <i class="fas fa-search"></i>
               </button>
+            </div>
+            <div class="sort-container">
+              <label for="statusSort">Sort by Status:</label>
+              <select id="statusSort">
+                <option value="all">All</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="pending">Pending</option>
+              </select>
             </div>
             <div class="button-group">
             <!-- View Requests Button -->
@@ -305,6 +347,7 @@
             <button class="add-button" id="addStudentsBtn">
               <i class="fas fa-plus"></i> Add Student
             </button>
+            </div>
           </div>
         </div>
 

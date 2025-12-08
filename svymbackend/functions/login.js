@@ -147,7 +147,9 @@ exports.handler = async (event) => {
     }
 
     // ------------------- Admin Login -------------------
+    console.log("Checking admin login for userId:", userId);
     const adminDoc = await Admin.findOne({ username: userId });
+    console.log("Admin document:", adminDoc);
     if (adminDoc) {
       console.log(adminDoc);
 

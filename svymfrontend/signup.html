@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SVYM Tech4Hope - Add Student</title>
+    <title>SVYM - Add Student</title>
   <link rel ="icon" type="image/png" href="public/favicon.png" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
@@ -68,20 +68,13 @@
     }
 
     .form-row {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 15px;
       margin-bottom: 15px;
     }
 
     .form-row .form-group {
-      flex: 1 1 45%; /* Two columns by default */
-      min-width: 200px;
-    }
-
-    /* For small inputs/dropdowns, allow three columns */
-    .form-row.three-cols .form-group {
-      flex: 0 0 30%;
       min-width: 150px;
     }
 
@@ -150,7 +143,7 @@
     <div class="logo">
       <img src="public/logo.jpg" alt="SVYM Logo" />
     </div>
-    <h1 class="company-name">SVYM Tech4Hope</h1>
+    <h1 class="company-name">SVYM </h1>
     <p class="caption">Empowering communities through technology education and outreach.</p>
   </div>
 
@@ -170,22 +163,22 @@
           <input type="text" id="fatherHusbandName" name="fatherHusbandName" required />
           <span id="fatherHusbandNameError" class="error-message"></span>
         </div>
-        
+        <div class="form-group">
+          <label for="familyMembers">Number of Family Members:</label>
+          <input type="number" id="familyMembers" name="familyMembers" min="1" required />
+          <span id="familyMembersError" class="error-message"></span>
+        </div>
       </div>
 
-      <div class="form-row three-cols">
+      <div class="form-row">
         <div class="form-group">
           <label for="districtName">District Name:</label>
-          <select id="districtName" name="districtName" required>
-            <option value="">Select District</option>
-          </select>
+          <input type="text" id="districtName" name="districtName" required />
           <span id="districtNameError" class="error-message"></span>
         </div>
         <div class="form-group">
           <label for="talukName">Taluk Name:</label>
-          <select id="talukName" name="talukName" required disabled>
-            <option value="">Select Taluk</option>
-          </select>
+          <input type="text" id="talukName" name="talukName" required />
           <span id="talukNameError" class="error-message"></span>
         </div>
         <div class="form-group">
@@ -195,17 +188,16 @@
         </div>
       </div>
 
-      <div class="form-row three-cols">
+      <div class="form-row">
         <div class="form-group">
           <label for="dob">Date of Birth:</label>
           <input type="date" id="dob" name="dob" required />
           <span id="dobError" class="error-message"></span>
         </div>
-          <input type="hidden" id="age" name="age" readonly required />
         <div class="form-group">
-          <label for="familyMembers">Number of Family Members:</label>
-          <input type="number" id="familyMembers" name="familyMembers" min="1" required />
-          <span id="familyMembersError" class="error-message"></span>
+          <label for="age">Age:</label>
+          <input type="text" id="age" name="age" readonly required />
+          <span id="ageError" class="error-message"></span>
         </div>
         <div class="form-group">
           <label for="qualification">Qualification:</label>
@@ -272,7 +264,7 @@
         </div>
       </div>
 
-      <div class="form-row three-cols">
+      <div class="form-row">
         <div class="form-group">
           <label for="email">Email ID:</label>
           <input type="email" id="email" name="email" required />
@@ -290,7 +282,7 @@
         </div>
       </div>
 
-      <div class="form-row three-cols">
+      <div class="form-row">
         <div class="form-group">
           <label for="parentPhone">Parent/Guardian Phone Number:</label>
           <input type="tel" id="parentPhone" name="parentPhone" required pattern="\d{10}" maxlength="10" title="Phone number must be 10 digits">
@@ -315,7 +307,7 @@
         </div>
       </div>
 
-      <div class="form-row three-cols">
+      <div class="form-row">
         <div class="form-group">
           <label for="caste">Caste:</label>
           <select id="caste" name="caste" required>
@@ -373,13 +365,12 @@
             <option value="Hemophilia">Hemophilia</option>
             <option value="Sickle Cell Disease">Sickle Cell Disease</option>
             <option value="Others">Others</option>
-            <option value="None">None</option>
+            <option value="None" selected="selected">None</option>
           </select>
           <input type="text" id="otherPwd" name="otherPwd" style="display:none;" placeholder="Specify other disability">
           <span id="pwdError" class="error-message"></span>
           <span id="otherPwdError" class="error-message"></span>
         </div>
-        
       </div>
 
       <div class="form-row three-cols">

@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     const generatedUserIdDiv = document.getElementById('generatedUserId');
     const dobInput = document.getElementById('dob');
     const ageInput = document.getElementById('age');
-    const districtSelect = document.getElementById('districtName');
-    const talukSelect = document.getElementById('talukName');
+    const districtInput = document.getElementById('districtName');
+    const talukInput = document.getElementById('talukName');
     const casteSelect = document.getElementById('caste');
     const referralSource = document.getElementById('referralSource');
     const staffNameDiv = document.getElementById('staffNameDiv');
@@ -61,6 +61,22 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     if (fatherHusbandNameInput) {
         fatherHusbandNameInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^a-zA-Z\s]/g, ''); // restrict to alphabets and spaces
+            this.value = toTitleCase(this.value);
+        });
+    }
+
+    // Input restriction for district name
+    if (districtInput) {
+        districtInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^a-zA-Z\s]/g, ''); // restrict to alphabets and spaces
+            this.value = toTitleCase(this.value);
+        });
+    }
+
+    // Input restriction for taluk name
+    if (talukInput) {
+        talukInput.addEventListener('input', function() {
             this.value = this.value.replace(/[^a-zA-Z\s]/g, ''); // restrict to alphabets and spaces
             this.value = toTitleCase(this.value);
         });
@@ -186,7 +202,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             input.addEventListener('blur',()=>{ if(!input.validity.valid && input.value.trim()!=='') showError(input,input.title||'Invalid format.'); else clearError(input); });
         }
         // Specific validation for name fields (only alphabets and spaces)
-        if(input.id === 'candidateName' || input.id === 'fatherHusbandName'){
+        if(input.id === 'candidateName' || input.id === 'fatherHusbandName' || input.id === 'districtName' || input.id === 'talukName'){
             input.addEventListener('input',()=>{ if(input.value.trim()!=='' && /[^a-zA-Z\s]/.test(input.value)) showError(input,'Only alphabets and spaces allowed.'); else clearError(input); });
             input.addEventListener('blur',()=>{ if(input.value.trim()!=='' && /[^a-zA-Z\s]/.test(input.value)) showError(input,'Only alphabets and spaces allowed.'); else clearError(input); });
         }
@@ -234,75 +250,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         setTimeout(() => { approvalMessageDiv.style.display = 'none'; }, 4000);
     }
 
-    // ------------------------------
-    // Districts & Taluks
-    // ------------------------------
-    const districts = [
-        "Bagalkot","Ballari","Belagavi","Bengaluru Rural","Bengaluru Urban",
-        "Bidar","Chamarajanagar","Chikkaballapur","Chikkamagaluru","Chitradurga",
-        "Dakshina Kannada","Davanagere","Dharwad","Gadag","Hassan",
-        "Haveri","Kalaburagi (Gulbarga)","Kodagu","Kolar","Koppal",
-        "Mandya","Mysuru","Raichur","Ramanagara","Shivamogga (Shimoga)",
-        "Tumakuru","Udupi","Uttara Kannada (Karwar)","Vijayapura (Bijapur)","Yadgir"
-    ].sort();
 
-    districts.forEach(district => {
-        const option = document.createElement('option');
-        option.value = district;
-        option.textContent = district;
-        districtSelect.appendChild(option);
-    });
-
-    const districtTaluks = {
-        "Bagalkot": ["Badami","Bagalkot","Bilgi","Hungund","Jamkhandi","Mudhol","Rabkavi Banhatti"],
-        "Ballari":["Ballari","Hospet (Vijayanagara)","Kudligi","Sandur","Siruguppa","Kampli","Hagaribommanahalli","Kotturu","Kurugodu","Hoovina Hadagali"],
-        "Belagavi":["Athani","Bailhongal","Belagavi","Chikodi","Gokak","Hukkeri","Khanapur","Raibag","Ramdurg","Saundatti","Kagwad","Mudalagi","Nippani"],
-        "Bengaluru Rural":["Devanahalli","Doddaballapur","Hosakote","Nelamangala","Vijayapura"],
-        "Bengaluru Urban":["Bengaluru North","Bengaluru South","Bengaluru East","Anekal","Yelahanka","Kengeri"],
-        "Bidar":["Aurad","Basavakalyan","Bhalki","Bidar","Humnabad","Kamalanagar","Chitguppa"],
-        "Chamarajanagar":["Chamarajanagar","Gundlupet","Kollegal","Yelandur","Hanur"],
-        "Chikkaballapur":["Bagepalli","Chikkaballapur","Gauribidanur","Gudibanda","Sidlaghatta","Chintamani"],
-        "Chikkamagaluru":["Chikkamagaluru","Kadur","Koppa","Mudigere","Narasimharajapura","Sringeri","Tarikere"],
-        "Chitradurga":["Chitradurga","Challakere","Hiriyur","Holalkere","Hosadurga","Molakalmuru"],
-        "Dakshina Kannada":["Bantwal","Belthangady","Mangaluru","Puttur","Sullia","Kadaba","Mulki","Moodabidri"],
-        "Davanagere":["Channagiri","Davanagere","Harihar","Honnali","Jagalur","Nyamathi"],
-        "Dharwad":["Annigeri","Dharwad","Hubballi","Kalghatgi","Kundgol","Navalgund","Alnavar"],
-        "Gadag":["Gadag","Gajendragad","Laxmeshwar","Mundargi","Nargund","Ron","Shirhatti"],
-        "Hassan":["Alur","Arkalgud","Arsikere","Belur","Channarayapattana","Hassan","Holenarasipur","Sakleshpur"],
-        "Haveri":["Byadgi","Hanagal","Haveri","Hirekerur","Ranebennur","Savnur","Shiggaon"],
-        "Kalaburagi (Gulbarga)":["Afzalpur","Aland","Chincholi","Chittapur","Kalaburagi","Jevargi","Sedam","Kamalapur","Shahabad","Yadrami"],
-        "Kodagu":["Madikeri","Somvarpet","Virajpet","Ponnampet","Kushalnagar"],
-        "Kolar":["Bangarapet","Kolar","Malur","Mulbagal","Srinivaspur"],
-        "Koppal":["Gangavati","Koppal","Kushtagi","Yelburga","Kanakagiri","Karatagi"],
-        "Mandya":["Krishnarajapet","Maddur","Malavalli","Mandya","Nagamangala","Pandavapura","Srirangapatna","Maddur"],
-        "Mysuru":["Mysuru","Hunsur","Nanjangud","T. Narasipur","Krishnarajanagara","Piriyapatna","Saragur","Heggadadevankote"],
-        "Raichur":["Devadurga","Lingsugur","Manvi","Raichur","Sindhanur","Maski","Sirwar"],
-        "Ramanagara":["Channapattana","Kanakapura","Magadi","Ramanagara"],
-        "Shivamogga (Shimoga)":["Bhadravati","Hosanagara","Sagar","Shikaripur","Shivamogga","Sorab","Thirthahalli"],
-        "Tumakuru":["Chiknayakanahalli","Gubbi","Koratagere","Kunigal","Madhugiri","Pavagada","Sira","Tiptur","Tumakuru","Turuvekere"],
-        "Udupi":["Brahmavar","Byndoor","Karkala","Kaup","Kundapura","Udupi","Hebri"],
-        "Uttara Kannada (Karwar)":["Ankola","Bhatkal","Haliyal","Honnavar","Joida","Karwar","Kumta","Mundgod","Siddapur","Sirsi","Yellapur"],
-        "Vijayapura (Bijapur)":["Basavana Bagewadi","Bijapur (Vijayapura)","Indi","Muddebihal","Sindagi","Kolhar","Tikota"],
-        "Yadgir":["Gurumitkal","Shahapur","Shorapur","Vadagera","Yadgir","Gurumitkal"]
-    };
-
-    districtSelect.addEventListener('change', function () {
-        const selectedDistrict = this.value;
-        talukSelect.innerHTML = '<option value="">Select Taluk</option>';
-        talukSelect.disabled = true;
-        if (selectedDistrict && districtTaluks[selectedDistrict]) {
-            const taluks = districtTaluks[selectedDistrict].sort();
-            taluks.forEach(t => {
-                const option = document.createElement('option');
-                option.value = t;
-                option.textContent = t;
-                talukSelect.appendChild(option);
-            });
-            talukSelect.disabled = false;
-        }
-        clearError(districtSelect);
-        clearError(talukSelect);
-    });
 
     casteSelect.addEventListener('change', function () {
         const tribalSelect = document.getElementById('tribal');
@@ -435,8 +383,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                 pwd: st.pwd,
                 status: st.approvalStatus || "Active",
                 enrollments: st.enrollments || [],
-                creationDate: formatDate(st.createdAt)
-            }));
+                creationDate: formatDate(st.createdAt),
+                createdAt: st.createdAt
+            })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             renderStudentsTable();
         } catch (err) {
             console.error("Error fetching students:", err);
@@ -588,7 +537,6 @@ function getFilteredData() {
         document.getElementById('otherQualification').value = student.otherQualification;
         document.getElementById('villageName').value = student.villageName;
         document.getElementById('districtName').value = student.districtName;
-        districtSelect.dispatchEvent(new Event('change'));
         document.getElementById('talukName').value = student.talukName;
         document.getElementById('caste').value = student.caste;
         document.getElementById('caste').dispatchEvent(new Event('change'));

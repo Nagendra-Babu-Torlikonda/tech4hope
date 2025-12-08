@@ -390,16 +390,12 @@
                   <div class="form-row three-cols">
                     <div class="form-group">
                       <label for="districtName">District Name:</label>
-                      <select id="districtName" name="districtName" required>
-                        <option value="">Select District</option>
-                      </select>
+                      <input type="text" id="districtName" name="districtName" required />
                       <span id="districtNameError" class="error-message"></span>
                     </div>
                     <div class="form-group">
                       <label for="talukName">Taluk Name:</label>
-                      <select id="talukName" name="talukName" required disabled>
-                        <option value="">Select Taluk</option>
-                      </select>
+                      <input type="text" id="talukName" name="talukName" required />
                       <span id="talukNameError" class="error-message"></span>
                     </div>
                     <div class="form-group">
@@ -415,7 +411,11 @@
                       <input type="date" id="dob" name="dob" required />
                       <span id="dobError" class="error-message"></span>
                     </div>
-                      <input type="hidden" id="age" name="age" readonly required />
+                    <div class="form-group">
+                      <label for="age">Age:</label>
+                      <input type="text" id="age" name="age" readonly required />
+                      <span id="ageError" class="error-message"></span>
+                    </div>
                     <div class="form-group">
                       <label for="familyMembers">Number of Family Members:</label>
                       <input type="number" id="familyMembers" name="familyMembers" min="1" required />

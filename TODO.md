@@ -1,22 +1,14 @@
-## Plan to Remove Location Field from Course
+# TODO: Implement Pop-up Modal for Signup Success Message
 
-### Information Gathered
-- Course model in `svymbackend/functions/models/Course.js` has `location` field set to `required: true`.
-- `svymbackend/functions/addCourse.js` destructures `location` from request body, validates it as required, and passes it to the Course constructor.
-- `svymbackend/functions/updateCourse.js` does not handle `location` field.
-- Frontend in `svymfrontend/Javascripts/add_course.js` has `location` commented out in the payload.
-- HTML form in `svymfrontend/admin_courses.html` does not include a location input field.
+## Tasks
+- [ ] Add modal HTML structure to signup.html for success message
+- [ ] Update signup.js to display modal instead of inline message on successful signup
+- [ ] Include user ID and admin approval message in the modal
+- [ ] Test the modal functionality (Manual testing required - see below)
 
-### Plan
-1. [x] Remove `location` field from Course schema in `svymbackend/functions/models/Course.js`.
-2. [x] Remove `location` from destructuring in `svymbackend/functions/addCourse.js`.
-3. [x] Remove `location` from validation check in `addCourse.js`.
-4. [x] Remove `location` from Course constructor in `addCourse.js`.
-
-### Dependent Files to Edit
-- `svymbackend/functions/models/Course.js`
-- `svymbackend/functions/addCourse.js`
-
-### Followup Steps
-- Test adding a course to ensure no validation error for location.
-- Check if any other backend functions or frontend code references location that needs updating.
+## Testing Instructions:
+1. Start local server: `cd svymfrontend && python3 -m http.server 8000`
+2. Open http://localhost:8000/signup.html in browser
+3. Fill out and submit the signup form (requires backend)
+4. Verify modal appears with success message, user ID, and approval notice
+5. Test modal close functionality (X button and click outside)

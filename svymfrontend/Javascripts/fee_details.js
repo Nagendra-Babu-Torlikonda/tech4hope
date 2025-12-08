@@ -264,8 +264,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Add logo if loaded
         if (logoBase64) {
-            const logoWidth = 80;
-            const logoHeight = 35;
+            const logoWidth = 70;
+            const logoHeight = 20;
             const logoX = center - (logoWidth / 2);
             doc.addImage(logoBase64, 'PNG', logoX, y, logoWidth, logoHeight);
             y += 55;

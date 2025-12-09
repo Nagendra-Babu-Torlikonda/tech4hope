@@ -1,14 +1,12 @@
-# TODO: Implement Pop-up Modal for Signup Success Message
+# TODO: Add Location Input to Admin Courses Add Course Feature
 
-## Tasks
-- [ ] Add modal HTML structure to signup.html for success message
-- [ ] Update signup.js to display modal instead of inline message on successful signup
-- [ ] Include user ID and admin approval message in the modal
-- [ ] Test the modal functionality (Manual testing required - see below)
+## Backend Changes
+- [x] Add 'location' field to Course schema in svymbackend/functions/models/Course.js
+- [x] Update svymbackend/functions/addCourse.js to accept and save location from request body
 
-## Testing Instructions:
-1. Start local server: `cd svymfrontend && python3 -m http.server 8000`
-2. Open http://localhost:8000/signup.html in browser
-3. Fill out and submit the signup form (requires backend)
-4. Verify modal appears with success message, user ID, and approval notice
-5. Test modal close functionality (X button and click outside)
+## Frontend Changes
+- [x] Add location input field to add course form in svymfrontend/admin_courses.html
+- [x] Update svymfrontend/Javascripts/add_course.js to include location in form validation and submission payload
+
+## Testing
+- [x] Implementation complete - location input box added to frontend and backend. Manual testing required to verify functionality.

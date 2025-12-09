@@ -22,6 +22,10 @@ async function updateCourseStatus(course) {
 
     if (course.courseStatus !== newStatus) {
       course.courseStatus = newStatus;
+      // Ensure location field exists for backward compatibility
+      if (course.location === undefined) {
+        course.location = "";
+      }
       await course.save();
       return true; // status was updated
     }
@@ -35,15 +39,20 @@ async function updateCourseStatus(course) {
 async function updateCoursesStatus(courses) {
   if (!courses || courses.length === 0) return;
 
-  // Connect once
-  await connectDB();
+  try {
+    // Connect once
+    await connectDB();
 
-  // Process in batches to avoid overwhelming the DB
-  const batchSize = 10;
-  for (let i = 0; i < courses.length; i += batchSize) {
-    const batch = courses.slice(i, i + batchSize);
-    const updatePromises = batch.map(course => updateCourseStatus(course));
-    await Promise.all(updatePromises);
+    // Process in batches to avoid overwhelming the DB
+    const batchSize = 10;
+    for (let i = 0; i < courses.length; i += batchSize) {
+      const batch = courses.slice(i, i + batchSize);
+      const updatePromises = batch.map(course => updateCourseStatus(course));
+      await Promise.all(updatePromises);
+    }
+  } catch (error) {
+    console.error('Error in updateCoursesStatus:', error);
+    // Don't throw - this is non-critical
   }
 }
 

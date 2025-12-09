@@ -11,7 +11,7 @@ exports.handler = async (event) => {
     await connectDB();
 
     const body = JSON.parse(event.body);
-    const { courseName, price, startDate, endDate, duration, moduleNames, description, addedBy } = body;
+    const { courseName, price, startDate, endDate, duration, moduleNames, description, location, addedBy } = body;
 
     // Validation
     if (!courseName || !price || !startDate || !endDate || !moduleNames || moduleNames.length === 0 ||
@@ -52,6 +52,7 @@ exports.handler = async (event) => {
       durationMonths: duration,
       moduleNames,
       description,
+      location,
       addedBy,
       courseStatus,
       trainerId: null,

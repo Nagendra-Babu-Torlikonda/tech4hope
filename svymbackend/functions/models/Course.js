@@ -58,6 +58,11 @@ const courseSchema = new mongoose.Schema({
     trim: true,
     required: true,
   },
+  location: {
+    type: String,
+    trim: true,
+    default: "",
+  },
   addedBy: {
     type: String, // userId of admin
     required: true,

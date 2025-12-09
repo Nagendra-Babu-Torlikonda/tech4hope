@@ -490,7 +490,7 @@
     const startDate = startDateInput.value;
     const endDate = endDateInput.value;
     const duration = durationInput.value;
-    // const location = locationSelect.value;
+    const location = document.getElementById("location").value.trim();
     const description = document.getElementById("description").value.trim();
 
     const moduleInputs = document.querySelectorAll(".moduleName");
@@ -542,7 +542,7 @@
         endDate,
         duration,
         moduleNames,
-        // location,
+        location,
         description
       },
       addedBy: sessionStorage.getItem("userId") || "unknown",

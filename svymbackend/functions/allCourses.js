@@ -17,14 +17,14 @@ exports.handler = async (event, context) => {
     // Fetch all courses
     const courses = await Course.find();
 
-    // Update course statuses if needed (non-blocking)
-    try {
-      const { updateCoursesStatus } = require('./utils/updateCourseStatus');
-      await updateCoursesStatus(courses);
-    } catch (updateError) {
-      console.error('Error updating course statuses:', updateError);
-      // Continue without failing the request
-    }
+    // Temporarily disable status updates to isolate the issue
+    // try {
+    //   const { updateCoursesStatus } = require('./utils/updateCourseStatus');
+    //   await updateCoursesStatus(courses);
+    // } catch (updateError) {
+    //   console.error('Error updating course statuses:', updateError);
+    //   // Continue without failing the request - this is non-critical
+    // }
 
     return {
       statusCode: 200,

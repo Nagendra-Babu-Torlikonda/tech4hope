@@ -23,6 +23,7 @@ exports.handler = async (event) => {
       endDate,
       durationMonths,
       description,
+      location,
       moduleNames,
       trainer
     } = JSON.parse(event.body);
@@ -120,6 +121,7 @@ exports.handler = async (event) => {
     if (endDate) course.endDate = endDate;
     if (durationMonths) course.durationMonths = durationMonths;
     if (description) course.description = description;
+    if (location !== undefined) course.location = location;
     if (Array.isArray(moduleNames)) course.moduleNames = moduleNames;
 
     course.trainerId = trainerId;

@@ -28,7 +28,7 @@ exports.handler = async (event) => {
         const transactions = await Transaction.find({ enrollmentId: enrollment.enrollmentId });
 
         const payments = transactions.map(tx => ({
-          date: tx.createdAt || tx._id.getTimestamp(), // fallback if no explicit date
+          date: tx.paymentDate || tx.createdAt || tx._id.getTimestamp(), // use paymentDate if available, otherwise fallback
           amount: tx.amountPaid,
           method: tx.paymentMethod,
           transactionId: tx.transactionId, // key for frontend operations

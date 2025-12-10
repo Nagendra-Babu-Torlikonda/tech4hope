@@ -16,6 +16,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const pendingFeesElement = document.getElementById("pendingFees");
     const paymentHistoryTableBody = document.getElementById("paymentHistoryTableBody");
 
+    const editDateModal = document.getElementById("editDateModal");
+    const editDateInput = document.getElementById("editDateInput");
+    const saveDateBtn = document.getElementById("saveDateBtn");
+    const cancelDateBtn = document.getElementById("cancelDateBtn");
+
+    const editIdModal = document.getElementById("editIdModal");
+    const editIdInput = document.getElementById("editIdInput");
+    const saveIdBtn = document.getElementById("saveIdBtn");
+    const cancelIdBtn = document.getElementById("cancelIdBtn");
+
     const API_BASE = "/.netlify/functions";
 
     // -------------------------- GLOBAL VARIABLES --------------------------
@@ -31,6 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // -------------------------- MODAL CLOSE --------------------------
     transactionsModal.querySelector(".close-btn").addEventListener("click", () => transactionsModal.classList.add("hide"));
     studentFeeModal.querySelector(".close-btn").addEventListener("click", () => studentFeeModal.classList.add("hide"));
+    editDateModal.querySelector(".close-btn").addEventListener("click", () => editDateModal.classList.add("hide"));
+    editIdModal.querySelector(".close-btn").addEventListener("click", () => editIdModal.classList.add("hide"));
 
     // -------------------------- FETCH ALL DATA ON LOAD --------------------------
     async function fetchAllData() {
@@ -83,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 (item.studentName && item.studentName.toLowerCase().includes(filterText)) ||
                 (item.courseName && item.courseName.toLowerCase().includes(filterText))
             );
-            headers = ["Transaction ID","Student ID","Student Name","Course","Amount","Payment Mode","Paid To","Transaction Date"];
+            headers = ["Transaction ID","Student ID","Student Name","Course","Amount","Payment Mode","Paid To","Transaction Date","Actions"];
         }
 
         feeTableHead.innerHTML = `<tr>${headers.map(h => `<th>${h}</th>`).join("")}</tr>`;
@@ -157,6 +169,22 @@ document.addEventListener("DOMContentLoaded", () => {
                     createCell(item.paidTo),
                     createCell(new Date(item.transactionDate).toLocaleString())
                 );
+                const actionCell = createCell("");
+                const editDateBtn = document.createElement("button");
+                editDateBtn.classList.add("action-btn");
+                editDateBtn.innerHTML = '<i class="fas fa-calendar"></i>';
+                editDateBtn.title = "Edit Date";
+                editDateBtn.addEventListener("click", () => openDateEditModal(item));
+                actionCell.appendChild(editDateBtn);
+
+                const editIdBtn = document.createElement("button");
+                editIdBtn.classList.add("action-btn");
+                editIdBtn.innerHTML = '<i class="fas fa-hashtag"></i>';
+                editIdBtn.title = "Edit Transaction ID";
+                editIdBtn.addEventListener("click", () => openIdEditModal(item));
+                actionCell.appendChild(editIdBtn);
+
+                row.appendChild(actionCell);
             }
 
             feeTableBody.appendChild(row);
@@ -351,6 +379,110 @@ document.addEventListener("DOMContentLoaded", () => {
         studentFeeModal.classList.remove("hide");
     }
 
+    // -------------------------- DATE EDIT MODAL --------------------------
+    let currentEditingTransaction = null;
+
+    function openDateEditModal(transaction) {
+        currentEditingTransaction = transaction;
+        const currentDate = new Date(transaction.transactionDate);
+        const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+        editDateInput.value = formattedDate;
+        editDateModal.classList.remove("hide");
+    }
+
+    // -------------------------- SAVE DATE FUNCTION --------------------------
+    async function saveTransactionDate() {
+        if (!currentEditingTransaction) return;
+
+        const newDate = editDateInput.value;
+        if (!newDate) {
+            alert("Please select a date");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE}/updateTransactionDate`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    transactionId: currentEditingTransaction.transactionId,
+                    newDate: new Date(newDate).toISOString()
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert("Date updated successfully!");
+                editDateModal.classList.add("hide");
+                // Refresh the data
+                fetchAllData();
+            } else {
+                alert("Error updating date: " + result.message);
+            }
+        } catch (error) {
+            console.error("Error updating transaction date:", error);
+            alert("Error updating date. Please try again.");
+        }
+    }
+
+    saveDateBtn.addEventListener("click", saveTransactionDate);
+    cancelDateBtn.addEventListener("click", () => editDateModal.classList.add("hide"));
+
+    // -------------------------- ID EDIT MODAL --------------------------
+    function openIdEditModal(transaction) {
+        currentEditingTransaction = transaction;
+        editIdInput.value = transaction.transactionId;
+        editIdModal.classList.remove("hide");
+    }
+
+    // -------------------------- SAVE ID FUNCTION --------------------------
+    async function saveTransactionId() {
+        if (!currentEditingTransaction) return;
+
+        const newId = editIdInput.value.trim();
+        if (!newId) {
+            alert("Please enter a transaction ID");
+            return;
+        }
+
+        if (newId === currentEditingTransaction.transactionId) {
+            alert("New transaction ID is the same as current");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE}/updateTransactionId`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    transactionId: currentEditingTransaction.transactionId,
+                    newTransactionId: newId
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert("Transaction ID updated successfully!");
+                editIdModal.classList.add("hide");
+                // Refresh the data
+                fetchAllData();
+            } else {
+                alert("Error updating transaction ID: " + result.message);
+            }
+        } catch (error) {
+            console.error("Error updating transaction ID:", error);
+            alert("Error updating transaction ID. Please try again.");
+        }
+    }
+
+    saveIdBtn.addEventListener("click", saveTransactionId);
+    cancelIdBtn.addEventListener("click", () => editIdModal.classList.add("hide"));
 
     // --- ADDED HELPER FUNCTION to convert numbers to words (Indian system) ---
     function numberToWordsINR(num) {

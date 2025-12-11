@@ -127,8 +127,19 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // Get set of placed user IDs (only when adding new placement)
+    const placedUserIds = new Set();
+    if (!editingPlacementId) {
+      placements.forEach(placement => {
+        if (placement.isPlaced) {
+          placedUserIds.add(placement.userId);
+        }
+      });
+    }
+
     const filteredStudents = students.filter(student =>
-      student.userId.toLowerCase().includes(query.toLowerCase())
+      student.userId.toLowerCase().includes(query.toLowerCase()) &&
+      (editingPlacementId || !placedUserIds.has(student.userId))
     ).slice(0, 10); // Limit to 10 results
 
     if (filteredStudents.length === 0) {

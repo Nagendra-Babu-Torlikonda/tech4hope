@@ -1,12 +1,12 @@
-# TODO: Add Location Input to Admin Courses Add Course Feature
+# TODO: Admin Placements - Exclude Placed Students from Add Placement Dropdown
 
-## Backend Changes
-- [x] Add 'location' field to Course schema in svymbackend/functions/models/Course.js
-- [x] Update svymbackend/functions/addCourse.js to accept and save location from request body
+## Completed Tasks
+- [x] Analyzed the admin placements page structure and functionality
+- [x] Identified the `showStudentDropdown` function in `admin_placements.js` as the key component to modify
+- [x] Modified the `showStudentDropdown` function to exclude students with `isPlaced: true` when adding new placements
+- [x] Ensured editing existing placements still allows all matching students to appear
 
-## Frontend Changes
-- [x] Add location input field to add course form in svymfrontend/admin_courses.html
-- [x] Update svymfrontend/Javascripts/add_course.js to include location in form validation and submission payload
-
-## Testing
-- [x] Implementation complete - location input box added to frontend and backend. Manual testing required to verify functionality.
+## Next Steps
+- [ ] Test the updated functionality to ensure placed students are filtered out in the add placement dropdown
+- [ ] Verify that editing existing placements still works correctly
+- [ ] Confirm no syntax errors or runtime issues

@@ -471,6 +471,7 @@ function getFilteredData() {
                     <button class="action-btn edit-btn" data-id="${student.userId}"><i class="fas fa-pen"></i> Edit</button>
                     <button class="${payBtnClass}" data-id="${student.userId}" ${payBtnDisabled}><i class="fas fa-credit-card"></i> Pay Due</button>
                     <button class="${assignBtnClass}" data-id="${student.userId}" ${assignBtnDisabled}><i class="fas fa-plus"></i> Assign Course</button>
+                    <button class="action-btn reset-password-btn" data-id="${student.userId}"><i class="fas fa-key"></i> Reset Password</button>
                 </td>
             `;
             studentTableBody.appendChild(tr);
@@ -487,6 +488,9 @@ function getFilteredData() {
         );
         document.querySelectorAll('.paydues-btn').forEach(btn =>
             btn.addEventListener('click', () => openAdminPayModal(btn.dataset.id))
+        );
+        document.querySelectorAll('.reset-password-btn').forEach(btn =>
+            btn.addEventListener('click', () => resetStudentPassword(btn.dataset.id))
         );
 
         updatePaginationInfo();
@@ -1155,6 +1159,31 @@ function getFilteredData() {
         } catch (e) {
             console.error('Error fetching fee data for admin pay:', e);
             feeRecordsForPay = [];
+        }
+    }
+
+    // ------------------------------
+    // Reset Student Password
+    // ------------------------------
+    async function resetStudentPassword(userId) {
+        const confirmed = confirm(`Are you sure you want to reset the password for student ${userId}? The student will be able to login with the default password (last 5 digits of their user ID) and will be prompted to change it on first login.`);
+        if (!confirmed) return;
+
+        try {
+            const res = await fetch('/.netlify/functions/resetStudentPassword', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId })
+            });
+            const data = await res.json();
+            if (data.message) {
+                showMessage('success', data.message);
+            } else {
+                showMessage('error', data.message || 'Failed to reset password');
+            }
+        } catch (err) {
+            console.error('Error resetting password:', err);
+            showMessage('error', 'Error resetting password');
         }
     }
 

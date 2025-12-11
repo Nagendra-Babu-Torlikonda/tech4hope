@@ -60,6 +60,14 @@
                             <button id="editValuesBtn" class="edit-btn"><i class="fas fa-edit"></i></button>
                         </div>
                     </div>
+                    <div class = "about-item">
+                        <h4>Development Paradigm</h4>
+                        <p id="orgDevelopmentParadigm"></p>
+                        <div class="org-actions">
+                            <button id="viewDevelopmentParadigmBtn" class="view-btn"><i class="fas fa-eye"></i></button>
+                            <button id="editDevelopmentParadigmBtn" class="edit-btn"><i class="fas fa-edit"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class = "team-container">
@@ -195,6 +203,18 @@
         </div>
     </div>
 
+    <div id="viewDevelopmentParadigmModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="modal-header">
+                <h2>View Development Paradigm</h2>
+            </div>
+            <div class="modal-body">
+                <p id="viewDevelopmentParadigmText"></p>
+            </div>
+        </div>
+    </div>
+
     <div id="viewFaqModal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
@@ -294,6 +314,24 @@
                     <div class="form-group">
                         <label for="valuesTextarea">Values (one per line):</label>
                         <textarea id="valuesTextarea" name="values" rows="6" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="developmentParadigmModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="modal-header">
+                <h2>Edit Development Paradigm</h2>
+            </div>
+            <div class="modal-body">
+                <form id="developmentParadigmForm">
+                    <div class="form-group">
+                        <label for="developmentParadigmText">Development Paradigm:</label>
+                        <textarea id="developmentParadigmText" name="developmentParadigm" rows="4" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Save</button>
                 </form>

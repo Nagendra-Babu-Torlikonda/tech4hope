@@ -5,7 +5,8 @@ const organizationSchema = new mongoose.Schema({
   aboutus: {
     mission: { type: String, required: true, trim: true },
     vision: { type: String, required: true, trim: true },
-    values: [{ type: String, required: true, trim: true }]  // changed to array
+    values: [{ type: String, required: true, trim: true }],  // changed to array
+    developmentParadigm: { type: String, required: true, trim: true }
   },
 
   contactus: {

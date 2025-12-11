@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             missionText.textContent = '';
             visionText.textContent = '';
             valuesText.textContent = '';
+            developmentParadigmText.textContent = '';
 
             // Inject description
             if (data.description) {
@@ -38,6 +39,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Inject values
             if (data.values) {
                 valuesText.textContent = data.values;
+            }
+
+            // Inject development paradigm
+            if (data.developmentParadigm) {
+                developmentParadigmText.textContent = data.developmentParadigm;
             }
         })
         .catch(error => {

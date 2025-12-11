@@ -95,6 +95,7 @@ function populateAboutSection(data) {
     document.getElementById('orgMission').textContent = data.mission;
     document.getElementById('orgVision').textContent = data.vision;
     document.getElementById('orgValues').textContent = data.values.join(', ');
+    document.getElementById('orgDevelopmentParadigm').textContent = data.developmentParadigm;
 }
 
 function populateContactSection(contactData) {
@@ -279,6 +280,10 @@ function setupEventListeners() {
     if (viewValuesBtn) viewValuesBtn.addEventListener('click', () => openViewValuesModal());
     const editValuesBtn = document.getElementById('editValuesBtn');
     if (editValuesBtn) editValuesBtn.addEventListener('click', () => openValuesModal());
+    const viewDevelopmentParadigmBtn = document.getElementById('viewDevelopmentParadigmBtn');
+    if (viewDevelopmentParadigmBtn) viewDevelopmentParadigmBtn.addEventListener('click', () => openViewDevelopmentParadigmModal());
+    const editDevelopmentParadigmBtn = document.getElementById('editDevelopmentParadigmBtn');
+    if (editDevelopmentParadigmBtn) editDevelopmentParadigmBtn.addEventListener('click', () => openDevelopmentParadigmModal());
 
     // Add Contact Add buttons explicitly
     const addEmailBtn = document.getElementById('addEmailBtn');
@@ -327,6 +332,8 @@ function setupEventListeners() {
     if (contactItemForm) contactItemForm.addEventListener('submit', handleContactItemSubmit);
     const socialForm = document.getElementById('socialForm');
     if (socialForm) socialForm.addEventListener('submit', handleSocialSubmit); // Add this for social media submit
+    const developmentParadigmForm = document.getElementById('developmentParadigmForm');
+    if (developmentParadigmForm) developmentParadigmForm.addEventListener('submit', handleDevelopmentParadigmSubmit);
 }
 
 function openTeamMemberModal(index = null, name = '', role = '') {
@@ -399,6 +406,15 @@ function openValuesModal() {
             valuesTextarea.value = data.values.join('\n');
             document.getElementById('valuesModal').classList.add('show');
         });
+}
+
+function openDevelopmentParadigmModal() {
+    const developmentParadigmText = document.getElementById('orgDevelopmentParadigm').textContent;
+    const textarea = document.getElementById('developmentParadigmText');
+    if (textarea) {
+        textarea.value = developmentParadigmText;
+    }
+    document.getElementById('developmentParadigmModal').classList.add('show');
 }
 
 async function handleValuesSubmit(event) {
@@ -774,6 +790,12 @@ function openViewSocialModal(platform, url) {
     document.getElementById('viewSocialModal').classList.add('show');
 }
 
+function openViewDevelopmentParadigmModal() {
+    const developmentParadigmText = document.getElementById('orgDevelopmentParadigm').textContent;
+    document.getElementById('viewDevelopmentParadigmText').textContent = developmentParadigmText;
+    document.getElementById('viewDevelopmentParadigmModal').classList.add('show');
+}
+
 // Form handlers
 async function handleMissionSubmit(e) {
     e.preventDefault();
@@ -814,6 +836,27 @@ async function handleVisionSubmit(e) {
     } catch (error) {
         console.error('Error:', error);
         alert('Error updating vision');
+    }
+}
+
+async function handleDevelopmentParadigmSubmit(e) {
+    e.preventDefault();
+    const developmentParadigm = document.getElementById('developmentParadigmText').value.trim();
+    try {
+        const response = await fetch('/.netlify/functions/org-update-development-paradigm', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ developmentParadigm })
+        });
+        if (response.ok) {
+            closeModal('developmentParadigmModal');
+            loadOrganizationData();
+        } else {
+            alert('Error updating development paradigm');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error updating development paradigm');
     }
 }
 
